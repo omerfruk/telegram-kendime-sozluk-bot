@@ -1,1 +1,0 @@
-# telegram-kendime-sozluk-bot
