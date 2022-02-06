@@ -40,26 +40,27 @@ func main() {
 
 	for update := range updates {
 		if update.Message != nil {
-			if update.Message.Text == "/introduceYourself" {
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hi my name is Kendine Sözlük bot.\n"+
-					"My goal is to teach you new words\n"+
-					"My author is @OmerFrukTasdemir")
-
-				bot.Send(msg)
-			}
-			if update.Message.Text == "/newWord" {
-
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+			switch update.Message.Command() {
+			case "help", "h":
+				msg.Text = "/introduceYourself : Introduce yourself\n" +
+					"/newWord : Sends you a new word\n" +
+					"Reply message with \"/explain\" (Very soon)"
+			case "introduceYourself":
+				msg.Text = "Hi my name is Kendine Sözlük bot :)\n" +
+					"My goal is to teach you new words\n" +
+					"I'll send you a word every hour between 10:00 and 22:00\n" +
+					"If you want a new word without waiting, what you should do is; /newWord\n" +
+					"My author is @OmerFrukTasdemir"
+			case "newWord":
 				sozcuk := SozcukGetirici()
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf("%s\n\n%s",
-					sozcuk.MetinIng,
-					sozcuk.OrnekCumle,
-				))
-				bot.Send(msg)
+				msg.Text = fmt.Sprintf("%s\n\n%s", sozcuk.MetinIng, sozcuk.OrnekCumle)
+			default:
+				msg.Text = "I don't know that command"
 			}
-			if update.Message.Text == "/help" || update.Message.Text == "/h" {
-				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "/introduceYourself : Introduce yourself\n"+
-					"/newWord : Sends you a new word\n")
-				bot.Send(msg)
+
+			if _, err = bot.Send(msg); err != nil {
+				log.Panic(err)
 			}
 		}
 	}
