@@ -34,7 +34,7 @@ func main() {
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
-	updates := bot.GetUpdatesChan(u)
+	updates,_ := bot.GetUpdatesChan(u)
 
 	go TimeMachine(bot)
 
