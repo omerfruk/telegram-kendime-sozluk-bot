@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-var token = "5230692118:AAEsx_ATWFmzwRFyHtM7ErA_UPjLu9ld600"
+var token = "******"
 
 type Sozluk struct {
 	MetinIng   string
